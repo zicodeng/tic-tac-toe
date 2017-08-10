@@ -1,0 +1,157 @@
+// Import compass
+@import "compass";
+
+// Reset browser default
+@import "compass/reset";
+
+// Change box-sizing to border-box
+html {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+}
+
+// Reset ends.
+
+// Define variables.
+$game-board-border: 5px solid white;
+
+// Content starts here.
+html, body {
+	background-color: black;
+	color: white;
+	font-family: sans-serif;
+}
+
+main {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+
+	h1 {
+		color: white;
+		font-size: 36px;
+		margin-bottom: 50px;
+	}
+
+	a {
+		display: inline-block;
+		background-color: black;
+		padding: 15px 30px;
+		border: 1px solid white;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+
+		&:hover {
+			background-color: white;
+			color: black;
+		}
+	}
+}
+
+table.game-board { 
+	margin: 50px 0;
+
+	&[data-game-status="game-over"] {
+		pointer-events: none;
+	}
+
+	> tbody {
+		> tr {
+			&:nth-child(2) {
+				border-top: $game-board-border;
+				border-bottom: $game-board-border;
+			}
+
+			> td {
+				width: 100px;
+				height: 100px;
+				position: relative;
+				cursor: pointer;
+
+				&:nth-child(2) {
+					border-left: $game-board-border;
+					border-right: $game-board-border;
+				}
+
+				// When green player has already placed.
+				&[data-item-status="green-placed"] {
+					> .circle {
+						display: block;
+					}
+
+					> .cross-sign {
+						display: none !important;
+					}
+				}
+
+				// When red player has already placed.
+				&[data-item-status="red-placed"] {
+					> .cross-sign {
+						display: block;
+					}
+
+					> .circle {
+						display: none !important;
+					}
+				}
+
+				// When it is green's turn.
+				&.green-turn:hover {
+					> .circle {
+						display: block;
+					}
+				}
+				
+				// When it is red's turn.
+				&.red-turn:hover {
+					> .cross-sign {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+.circle {
+	width: 60px;
+	height: 60px;
+	border: 5px solid green;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: none;
+	@include border-radius(60px); 
+	@include transform(translate(-50%, -50%));
+}
+
+.cross-sign {
+	position: relative;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: none;
+	@include transform(translate(-50%, -50%));
+
+	> div {
+		width: 5px;
+		height: 60px;
+		background-color: red;
+		@include transform(rotate(45deg));
+
+		&:last-child {
+			@include transform(rotate(-45deg));
+			margin-top: -60px;
+		}
+	}
+}
